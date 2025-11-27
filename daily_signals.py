@@ -16,10 +16,10 @@ Consulta el estado actual del mercado para tus activos.
 
 # --- CONFIGURACIÓN ---
 st.sidebar.header("Configuración")
-tickers_input = st.sidebar.text_area("Tickers (separados por coma)", value="SPY, QQQ, IWM, DIA, VTI")
+tickers_input = st.sidebar.text_area("Tickers (separados por coma)", value="SPY, QQQ, AMD, BRKB, URA, HUT, EEM, IBIT, MELI, META, MSFT, NVDA, SATL, KO, VEA, VIST, XP")
 tickers = [t.strip().upper() for t in tickers_input.split(",") if t.strip()]
 
-risk_free_rate = st.sidebar.number_input("Tasa Libre de Riesgo Actual (%)", min_value=0.0, value=4.0, step=0.1)
+
 
 # Configuración del Modelo
 st.sidebar.subheader("Parámetros del Modelo")
@@ -82,6 +82,6 @@ if st.sidebar.button("Analizar Mercado"):
         st.subheader("📋 Tablero de Señales")
         st.dataframe(df_results.style.applymap(color_signal, subset=['Señal']))
         
-        st.info(f"💡 **Nota:** Si la señal es 'WAIT', tu dinero debería estar rindiendo un **{risk_free_rate}%** anual.")
+
     else:
         st.warning("No se pudieron generar resultados.")
