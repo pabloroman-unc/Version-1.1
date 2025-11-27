@@ -188,11 +188,14 @@ if st.sidebar.button("Ejecutar Backtest"):
                     cash_pool = 0.0
                     shares_owned = 0.0
                     portfolio_values = []
+                    total_interest = 0.0
                     
                     for date, row in test_data.iterrows():
                         # Interés sobre el cash acumulado (antes de aporte)
                         if cash_pool > 0:
-                            cash_pool *= (1 + daily_risk_free)
+                            interest = cash_pool * daily_risk_free
+                            cash_pool += interest
+                            total_interest += interest
 
                         # Recibir aporte
                         cash_pool += row['Cash_Contribution']
@@ -234,7 +237,8 @@ if st.sidebar.button("Ejecutar Backtest"):
                         "Capital Invertido": f"${my_invested:.2f}",
                         "Valor Final": f"${final_val:.2f}",
                         "Retorno Total": f"{ret_pct:.2f}%",
-                        "vs SPY": f"{delta_spy:+.2f}%"
+                        "vs SPY": f"{delta_spy:+.2f}%",
+                        "Interés Ganado": f"${total_interest:.2f}"
                     })
                     
                 except Exception as e:
