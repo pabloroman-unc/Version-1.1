@@ -21,8 +21,7 @@ tickers_input = st.sidebar.text_area("Tickers (separados por coma)", value="SPY,
 tickers = [t.strip().upper() for t in tickers_input.split(",") if t.strip()]
 
 contribution_days = st.sidebar.number_input("Días entre Aportaciones", min_value=1, value=10)
-risk_free_rate = st.sidebar.number_input("Tasa Libre de Riesgo Anual (%)", min_value=0.0, value=4.0, step=0.5) / 100
-daily_risk_free = (1 + risk_free_rate) ** (1/252) - 1
+
 
 # Fechas
 st.sidebar.subheader("Período de Simulación")
@@ -188,15 +187,9 @@ if st.sidebar.button("Ejecutar Backtest"):
                     cash_pool = 0.0
                     shares_owned = 0.0
                     portfolio_values = []
-                    total_interest = 0.0
-                    
-                    for date, row in test_data.iterrows():
-                        # Interés sobre el cash acumulado (antes de aporte)
-                        if cash_pool > 0:
-                            interest = cash_pool * daily_risk_free
-                            cash_pool += interest
-                            total_interest += interest
 
+
+                    for date, row in test_data.iterrows():
                         # Recibir aporte
                         cash_pool += row['Cash_Contribution']
                         
@@ -238,7 +231,7 @@ if st.sidebar.button("Ejecutar Backtest"):
                         "Valor Final": f"${final_val:.2f}",
                         "Retorno Total": f"{ret_pct:.2f}%",
                         "vs SPY": f"{delta_spy:+.2f}%",
-                        "Interés Ganado": f"${total_interest:.2f}"
+
                     })
                     
                 except Exception as e:
